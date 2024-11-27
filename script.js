@@ -8,15 +8,8 @@ let studentData = [
     { id: 6, name: "Daisy Adams", registerNumber: "210821104050", status: "present" },
 ];
 
-
 document.getElementById('attendanceForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    // You can use the form data if needed to filter or validate
-    const date = document.getElementById('date').value;
-    const department = document.getElementById('department').value;
-    const year = document.getElementById('year').value;
-    const section = document.getElementById('section').value;
-
     renderTable();
 });
 
@@ -84,61 +77,47 @@ function updateCounts() {
     document.getElementById('totalStudents').innerText = `Total Students: ${totalStudents}`;
 }
 
-
-
 document.getElementById('previewBtn').addEventListener('click', function() {
     const content = document.getElementById('studentDetails'); // Element containing your table
 
-    try {
-        // Attempt to capture the HTML to Canvas
-        html2canvas(content).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jspdf.jsPDF({
-                orientation: 'p',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            // Load your logo
-            const logoUrl = 'assets/kec.jpeg'; // Ensure this URL is correct and accessible
-
-            // Adding the college logo at the top center of the PDF
-            pdf.addImage(logoUrl, 'PNG', 10, 10, 190, 30); // Adjust size as necessary
-
-            // Text positions
-            const leftColumnX = 10;
-            const rightColumnX = 150;
-            const headerY = 45;
-
-            // Set form and attendance details in the header
-            pdf.setFontSize(10);
-            pdf.text(`Date: ${document.getElementById('date').value || 'N/A'}`, rightColumnX, headerY);
-            pdf.text(`Department: ${document.getElementById('department').value || 'N/A'}`, rightColumnX, headerY + 5);
-            pdf.text(`Year: ${document.getElementById('year').value || 'N/A'}`, rightColumnX, headerY + 10);
-            pdf.text(`Section: ${document.getElementById('section').value || 'N/A'}`, rightColumnX, headerY + 15);
-
-            // Attendance details
-            const totalStudentsText = document.getElementById('totalStudents').innerText.split(": ")[1] || '0';
-            const totalPresentText = document.getElementById('totalPresent').innerText.split(": ")[1] || '0';
-            const totalAbsentText = document.getElementById('totalAbsent').innerText.split(": ")[1] || '0';
-            pdf.text(`Total Students: ${totalStudentsText}`, leftColumnX, headerY);
-            pdf.text(`Present: ${totalPresentText}`, leftColumnX, headerY + 5);
-            pdf.text(`Absent: ${totalAbsentText}`, leftColumnX, headerY + 10);
-
-            // Positioning the table below the header details
-            const tableOffsetY = 60;
-            pdf.addImage(imgData, 'PNG', 10, tableOffsetY, 190, canvas.height * 190 / canvas.width);
-
-            // Generate the PDF data URI and set it to display in an iframe within the modal
-            const pdfData = pdf.output('datauristring');
-            document.getElementById('pdfFrame').src = pdfData;
-            new bootstrap.Modal(document.getElementById('pdfModal')).show();
+    html2canvas(content).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
         });
-    } catch (error) {
+
+        const logoUrl = 'assets/kec.jpeg'; // Ensure this URL is correct and accessible
+
+        // Adding the college logo at the top center of the PDF
+        pdf.addImage(logoUrl, 'PNG', 10, 10, 190, 30); // Adjust size as necessary
+
+        // Text positions
+        const leftColumnX = 10;
+        const rightColumnX = 150;
+        const headerY = 45;
+
+        pdf.setFontSize(10);
+        pdf.text(`Date: ${document.getElementById('date').value || 'N/A'}`, rightColumnX, headerY);
+        pdf.text(`Department: ${document.getElementById('department').value || 'N/A'}`, rightColumnX, headerY + 5);
+        pdf.text(`Year: ${document.getElementById('year').value || 'N/A'}`, rightColumnX, headerY + 10);
+        pdf.text(`Section: ${document.getElementById('section').value || 'N/A'}`, rightColumnX, headerY + 15);
+
+        const totalStudentsText = document.getElementById('totalStudents').innerText.split(": ")[1] || '0';
+        const totalPresentText = document.getElementById('totalPresent').innerText.split(": ")[1] || '0';
+        const totalAbsentText = document.getElementById('totalAbsent').innerText.split(": ")[1] || '0';
+        pdf.text(`Total Students: ${totalStudentsText}`, leftColumnX, headerY);
+        pdf.text(`Present: ${totalPresentText}`, leftColumnX, headerY + 5);
+        pdf.text(`Absent: ${totalAbsentText}`, leftColumnX, headerY + 10);
+
+        const tableOffsetY = 60;
+        pdf.addImage(imgData, 'PNG', 10, tableOffsetY, 190, canvas.height * 190 / canvas.width); // Positioning the table below the header details
+
+        // Trigger the download directly
+        pdf.save('attendance_report.pdf');
+    }).catch(error => {
         console.error('Error generating PDF:', error);
         alert('An error occurred while generating the PDF.');
-    }
+    });
 });
-
-
-
