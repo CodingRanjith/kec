@@ -1,0 +1,73 @@
+
+header {
+    display: flex; /* Flexbox for better control of child elements */
+    justify-content: center; /* Center the logo horizontally */
+    align-items: center; /* Center the logo vertically */
+    padding: 10px 0; /* Add some padding around the header */
+    background-color: #f8f9fa; /* Optional: background color for the header */
+}
+
+.logo {
+    max-width: 100%; /* Ensures the logo is never larger than its container */
+    height: auto; /* Maintains the aspect ratio of the logo */
+    max-height: 100px; /* Adjust max height as needed */
+}
+
+    body {
+        font-family: 'Arial', sans-serif; /* Clean and bold font */
+        background-color: #f8f9fa; /* Light gray background for slight contrast */
+    }
+
+    .header, .modal-header {
+        background-color: #0056b3; /* Dark blue background for headers */
+        color: white; /* White text for contrast */
+    }
+
+    .form-label {
+        font-weight: bold; /* Make form labels bold */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Standard Bootstrap primary color */
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        border-color: #0056b3;
+    }
+
+    .modal-content {
+        background-color: #ffffff; /* Ensure modal background is white for clarity */
+    }
+
+    .table {
+        background-color: #ffffff; /* White background for tables */
+        color: #212529; /* Dark grey text for readability */
+    }
+
+    .table th {
+        background-color: #007bff; /* Blue headers for tables */
+        color: white;
+    }
+
+    .table td {
+        font-weight: bold; /* Bold text for table data */
+    }
+  /* Fullscreen Modal */
+  .modal-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    margin: 0;
+}
+
+.modal-fullscreen .modal-content {
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+}
+
+.modal-fullscreen .modal-body {
+    overflow-y: auto;
+}
